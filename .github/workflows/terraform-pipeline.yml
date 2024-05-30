@@ -37,7 +37,8 @@ jobs:
             if: github.ref_name == 'main' || startsWith(github.ref_name, 'feature/')
             run: terraform plan
             working-directory: ./TerraformScripts
-          
+            
+        # This Step Requires Approval from owner or maintainer whom has the required Github token to proceed further 
           - name: Manual Approval
             if: github.event_name == 'workflow_dispatch' && github.ref_name == 'main'
             uses: trstringer/manual-approval@v1
@@ -46,7 +47,6 @@ jobs:
               secret: ${{ secrets.GITHUB_TOKEN }}
               minimum-approvals: 1
 
-        # This Step Includes a condition to verify if user wants to apply or not and is only executed when pushing to the Main Branch
           - name: Terraform Apply
             id: apply
             if: github.ref_name == 'main' && (github.event_name == 'push' || steps.approval.outputs.approved == 'true')
