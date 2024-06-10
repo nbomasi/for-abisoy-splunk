@@ -55,6 +55,3 @@ The project aims to initialize a Github Actions CI/CD pipeline for Terraform to 
 
 
 
-
-
-
