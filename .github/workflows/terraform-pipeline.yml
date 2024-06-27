@@ -34,6 +34,18 @@ jobs:
                 echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
                 echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
 
+        # Add tfsec step to scan Terraform code
+          - name: Install tfsec
+            run: |
+              curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+
+          - name: Run tfsec (high/critical)
+            run: tfsec --severity HIGH --severity CRITICAL
+         
+          - name: Run tfsec (medium/low)
+            run: tfsec --severity MEDIUM --severity LOW || true
+
+          # Terraform Init step
           - name: Terraform Init
             id: init
             run: terraform init
