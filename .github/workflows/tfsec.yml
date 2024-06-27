@@ -11,12 +11,25 @@ jobs:
 
     steps:
       - name: Clone repo
-        uses: actions/checkout@main
+        uses: actions/checkout@v2
     
       - name: Install tfsec
         run: |
-          curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
-
+          # Get the latest version of tfsec
+          VERSION=$(curl -s "https://api.github.com/repos/aquasecurity/tfsec/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
+          
+          # Construct the URL for the arm64 binary
+          URL="https://github.com/aquasecurity/tfsec/releases/download/${VERSION}/tfsec-linux-arm64"
+          
+          # Download the binary
+          curl -L "${URL}" -o tfsec
+          
+          # Make the binary executable
+          chmod +x tfsec
+          
+          # Move the binary to a directory in your PATH
+          sudo mv tfsec /usr/local/bin/
+    
       - name: Run tfsec (high/critical)
         run: tfsec --severity HIGH --severity CRITICAL
   
