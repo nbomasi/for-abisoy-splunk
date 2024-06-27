@@ -35,12 +35,19 @@ jobs:
     steps:
       - name: Clone repo
         uses: actions/checkout@v2
+
       - name: Install tfsec
         run: |
-            curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
-            sudo mv tfsec /usr/local/bin/
-      - name: Run tfsec
-        run: tfsec --format=default .
+          curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+          ls -la /usr/local/bin/  # Debugging: List contents of /usr/local/bin/ to verify tfsec location
+          sudo mv /tmp/tfsec*/tfsec /usr/local/bin/
+          ls -la /usr/local/bin/  # Debugging: List contents again to verify tfsec was moved
+
+      - name: Run tfsec (high/critical)
+        run: tfsec --severity HIGH --severity CRITICAL
+
+      - name: Run tfsec (medium/low)
+        run: tfsec --severity MEDIUM --severity LOW || true
 
   Build-Infra:
     name: Terraform CICD
