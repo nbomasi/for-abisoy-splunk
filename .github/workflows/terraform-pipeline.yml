@@ -33,7 +33,12 @@ jobs:
             run: |
                 echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
                 echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
-
+          
+        # Installing docker
+          - name: Install Docker
+            uses: docker-practice/actions-setup-docker@master
+            timeout-minutes: 12
+          
         # Add tfsec step to scan Terraform code
           - name: Install tfsec
             run: |
