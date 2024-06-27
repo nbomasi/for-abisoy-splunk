@@ -33,20 +33,7 @@ jobs:
             run: |
                 echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
                 echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
-          
-        # Installing Docker
-          - name: Install Docker
-            run: |
-                sudo apt-get update
-                sudo apt-get install -y docker.io
-                sudo systemctl start docker
-                sudo systemctl enable docker
-                sudo usermod -aG docker $USER
-                newgrp docker
-
-          - name: Set up Docker Buildx
-            uses: docker/setup-buildx-action@v2
-          
+                 
         # Add tfsec step to scan Terraform code
           - name: Install tfsec
             run: |
