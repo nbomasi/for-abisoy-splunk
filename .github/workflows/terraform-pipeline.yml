@@ -34,14 +34,14 @@ jobs:
     needs: Install-Docker
     steps:
       - name: Clone repo
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
       - name: tfsec
         uses: aquasecurity/tfsec-action@v1.0.0
 
   Build-Infra:
     name: Terraform CICD
     runs-on: self-hosted
-    needs: Install-Docker tfsec
+    needs: [Install-Docker, tfsec]
     permissions:
       contents: read
       issues: write
