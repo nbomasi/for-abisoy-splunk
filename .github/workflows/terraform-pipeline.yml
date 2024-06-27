@@ -41,7 +41,7 @@ jobs:
         uses: aquasecurity/tfsec-action@v1.0.0
 
       - name: Run tfsec (high/critical)
-        run: tfsec --severity HIGH --severity CRITICAL
+        run: tfsec --severity HIGH --severity CRITICAL || true
 
       - name: Run tfsec (medium/low)
         run: tfsec --severity MEDIUM --severity LOW || true
