@@ -15,24 +15,25 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
-  Install-Docker:
-    runs-on: self-hosted
-    steps:
-      - name: Install Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io
-          sudo systemctl start docker
-          sudo systemctl enable docker
-          sudo usermod -aG docker $USER
-          newgrp docker
-          sudo chmod 666 /var/run/docker.sock
-
-  tfsec:
-    name: tfsec
-    runs-on: self-hosted
-    needs: Install-Docker
-    steps:
+  # # Installed Docker on the runner to allow pipeline run
+  # Install-Docker:
+  #   runs-on: self-hosted
+  #   steps:
+  #     - name: Install Docker
+  #       run: |
+  #         sudo apt-get update
+  #         sudo apt-get install -y docker.io
+  #         sudo systemctl start docker
+  #         sudo systemctl enable docker
+  #         sudo usermod -aG docker $USER
+  #         newgrp docker
+  #         sudo chmod 666 /var/run/docker.sock
+# configure TFSec for secutity check on terraform code
+    tfsec:
+      name: tfsec
+      runs-on: self-hosted
+      # needs: Install-Docker
+      steps:
       - name: Clone repo
         uses: actions/checkout@v2
 
