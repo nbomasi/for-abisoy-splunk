@@ -25,17 +25,33 @@ jobs:
           sudo systemctl start docker
           sudo systemctl enable docker
           sudo usermod -aG docker $USER
-          echo "PATH=$PATH:/usr/bin/docker" >> $GITHUB_ENV
           newgrp docker
+          sudo chmod 666 /var/run/docker.sock
+
+  tfsec:
+    name: tfsec
+    runs-on: self-hosted
+    needs: Install-Docker
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@master
+      - name: tfsec
+        uses: aquasecurity/tfsec-action@v1.0.0
 
   Build-Infra:
     name: Terraform CICD
     runs-on: self-hosted
-    needs: Install-Docker
+    needs: Install-Docker tfsec
     permissions:
       contents: read
       issues: write
     steps:
+      - name: Verify Docker Group
+        run: |
+          sudo usermod -aG docker $USER
+          newgrp docker
+          sudo chmod 666 /var/run/docker.sock
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -45,7 +61,6 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
 
-      # This Step moves the AWS credentials to the GitHub Environment So Terraform Can Automatically Identify the Provider is AWS
       - name: Set AWS Credentials
         run: |
           echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
@@ -56,14 +71,12 @@ jobs:
         run: terraform init
         working-directory: ./TerraformScripts
 
-      # This Step is only executed if the name of the Branch is either Main or starts with feature
       - name: Terraform Plan
         id: plan
         if: github.ref_name == 'main' || startsWith(github.ref_name, 'feature/')
         run: terraform plan -out saved_plan
         working-directory: ./TerraformScripts
 
-      # This Step Requires Approval from owner or maintainer who has the required GitHub token to proceed further
       - name: Manual Approval
         if: github.ref_name == 'main' && (github.event_name == 'push' || github.event_name == 'pull_request')
         uses: trstringer/manual-approval@v1
