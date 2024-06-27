@@ -36,7 +36,7 @@ jobs:
      steps:
      - name: Clone repo
        uses: actions/checkout@v2
-       
+
      - name: tfsec
        uses: aquasecurity/tfsec-pr-commenter-action@v1.2.0
 
@@ -48,7 +48,7 @@ jobs:
   Build-Infra:
        name: Terraform CICD
        runs-on: self-hosted
-       #needs: [Install-Docker, tfsec]
+       needs: tfsec
        permissions:
         contents: read
         issues: write
