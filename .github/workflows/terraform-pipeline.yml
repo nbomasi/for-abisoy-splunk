@@ -35,8 +35,12 @@ jobs:
     steps:
       - name: Clone repo
         uses: actions/checkout@v2
-      - name: tfsec
-        uses: aquasecurity/tfsec-action@v1.0.0
+      - name: Install tfsec
+        run: |
+            curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+            sudo mv tfsec /usr/local/bin/
+      - name: Run tfsec
+        run: tfsec --format=default .
 
   Build-Infra:
     name: Terraform CICD
