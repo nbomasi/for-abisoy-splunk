@@ -36,12 +36,8 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v2
 
-      - name: Install tfsec
-        run: |
-          curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
-          ls -la /usr/local/bin/  # Debugging: List contents of /usr/local/bin/ to verify tfsec location
-          sudo mv /tmp/tfsec*/tfsec /usr/local/bin/
-          ls -la /usr/local/bin/  # Debugging: List contents again to verify tfsec was moved
+      - name: tfsec
+        uses: aquasecurity/tfsec-action@v1.0.0
 
       - name: Run tfsec (high/critical)
         run: tfsec --severity HIGH --severity CRITICAL
