@@ -17,7 +17,7 @@ env:
 jobs:
     Build-Infra:
         name: Terraform CICD
-        runs-on: Ubuntu-latest
+        runs-on: self-hosted
         permissions:
           contents: read
           issues: write
