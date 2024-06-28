@@ -1,46 +1,84 @@
 variable "aws_region" {
-  description = "The AWS region to create resources in."
+  description = "AWS region"
   type        = string
-  default     = "us-east-1"
 }
 
 variable "aws_profile" {
-  description = "The AWS CLI profile to use for authentication."
+  description = "AWS profile"
   type        = string
-  default     = "nonprod"
 }
 
 variable "cidr_block" {
-  description = "The CIDR block for the VPC."
+  description = "The CIDR block for the VPC"
   type        = string
 }
 
 variable "enable_dns_support" {
-  description = "A boolean flag to enable/disable DNS support in the VPC."
+  description = "Should be true to enable DNS support in the VPC"
   type        = bool
-  default     = true
 }
 
 variable "enable_dns_hostnames" {
-  description = "A boolean flag to enable/disable DNS hostnames in the VPC."
+  description = "Should be true to enable DNS hostnames in the VPC"
   type        = bool
-  default     = true
+}
+
+variable "public_subnet_cidrs" {
+  description = "A list of CIDR blocks for public subnets"
+  type        = list(string)
+}
+
+variable "private_subnet_cidrs" {
+  description = "A list of CIDR blocks for private subnets"
+  type        = list(string)
+}
+
+variable "availability_zones" {
+  description = "A list of availability zones for the subnets"
+  type        = list(string)
+}
+
+variable "instance_count" {
+  description = "Number of instances to launch"
+  type        = number
+}
+
+variable "instance_type" {
+  description = "Type of instance to launch"
+  type        = string
+}
+
+variable "key_name" {
+  description = "Name of the SSH key pair"
+  type        = string
+}
+
+variable "vpc_security_group_ids" {
+  description = "List of security group IDs"
+  type        = list(string)
+}
+
+variable "ami_name_filter" {
+  description = "Filter for AMI name"
+  type        = string
+}
+
+variable "ami_owner" {
+  description = "AMI owner ID"
+  type        = string
 }
 
 variable "pod" {
-  description = "The pod identifier for the VPC name."
+  description = "Pod identifier"
   type        = string
 }
 
 variable "environment" {
-  description = "The environment name (e.g., sandbox, staging, production)."
+  description = "Environment (e.g., sandbox, staging, production)"
   type        = string
 }
 
 variable "tags" {
-  description = "A map of tags to assign to the resources."
+  description = "A map of tags to assign to the resources"
   type        = map(string)
-  default     = {
-    "CreatedBy" = "terraform"
-  }
 }

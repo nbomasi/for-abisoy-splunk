@@ -48,10 +48,3 @@ The project aims to initialize a Github Actions CI/CD pipeline for Terraform to 
     Navigate to the failed job.
     Click on the "Re-run jobs" button
     You can also use the following command: gh run rerun <run_id>
-
-
-
-
-
-
-
