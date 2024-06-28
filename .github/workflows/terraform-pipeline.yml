@@ -15,10 +15,10 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 Build-Infra:
-   name: Terraform CICD
-   runs-on: self-hosted
-   needs: tfsec
-   permissions:
+    name: Terraform CICD
+    runs-on: self-hosted
+    needs: tfsec
+    permissions:
       contents: read
       issues: write
     steps:
