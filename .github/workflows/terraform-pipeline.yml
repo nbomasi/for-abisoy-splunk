@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-      - feature*
+      - feature/*
   pull_request:
     types:
       - opened
@@ -14,22 +14,11 @@ env:
   AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-jobs:
-  tfsec:
-    name: tfsec
-    runs-on: self-hosted
-
-    steps:
-     - name: Clone repo
-       uses: actions/checkout@v2
-
-
-
-  Build-Infra:
-    name: Terraform CICD
-    runs-on: self-hosted
-    needs: tfsec
-    permissions:
+Build-Infra:
+   name: Terraform CICD
+   runs-on: self-hosted
+   needs: tfsec
+   permissions:
       contents: read
       issues: write
     steps:
