@@ -14,12 +14,13 @@ env:
   AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
 jobs:
   Build-Infra:
+
     name: Terraform CICD
     runs-on: self-hosted
-    needs: tfsec
     permissions:
       contents: read
       issues: write
+
     steps:
       - name: Verify Docker Group
         run: |
@@ -34,6 +35,7 @@ jobs:
         uses: aquasecurity/tfsec-pr-commenter-action@v1.2.0
         with:
           github_token: '${{ secrets.GITHUB_TOKEN }}'
+          
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
       - name: Set AWS Credentials
