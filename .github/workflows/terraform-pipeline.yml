@@ -17,13 +17,24 @@ env:
 jobs:
     Build-Infra:
         name: Terraform CICD
-        runs-on: Ubuntu-latest
+        runs-on: self-hosted
         permissions:
           contents: read
           issues: write
         steps:
+          - name: Set up Docker
+            uses: byloth/docker-setup-action@v1
+
           - name: Checkout
             uses: actions/checkout@v2
+
+          - name: Set up Node.js
+            uses: actions/setup-node@v4
+            with:
+              node-version: '18'
+
+          - name: Install unzip
+            run: sudo apt-get install unzip -y
 
           - name: Set up Terraform
             uses: hashicorp/setup-terraform@v2
@@ -46,25 +57,51 @@ jobs:
             run: terraform plan -out saved_plan
             working-directory: ./TerraformScripts
             
-         # This Step Requires Approval from owner or maintainer whom has the required Github token to proceed further
+        # This Step Requires Approval from owner or maintainer whom has the required Github token to proceed further
           - name: Manual Approval
-            if: github.event_name == 'push' || startsWith(github.ref_name, 'main')
+            id: approval
+            if: github.event_name == 'push' && startsWith(github.ref_name, 'main')
             uses: trstringer/manual-approval@v1
             with:
-               approvers: Mitchxxx,
-               secret: ${{ secrets.GITHUB_TOKEN }}
-               minimum-approvals: 1
-               issue-title: "Manual approval required for workflow run"
-               issue-body: |
-                 Workflow is pending manual review.
-                 URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-                 Required approvers: [Mitchxxx]
-                 Respond "approved", "approve", "lgtm", "yes" to continue workflow or "denied", "deny", "no" to cancel.
+              approvers: Mitchxxx,uzukwujp
 
-          -  name: Terraform Apply
-             id: apply
-             if: github.ref_name == 'main' && (github.event_name == 'push' || steps.approval.outputs.approved == 'true')
-             run: terraform apply --auto-approve saved_plan
-             working-directory: ./TerraformScripts
+              secret: ${{ secrets.GITHUB_TOKEN }}
+              minimum-approvals: 1
+              issue-title: "Manual approval required for workflow run"
+              issue-body: |
+                Workflow is pending manual review.
+                URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+                Required approvers: [Mitchxxx,uzukwujp]
+                Respond "approved", "approve", "lgtm", "yes" to continue workflow or "denied", "deny", "no" to cancel.
+
+          - name: Terraform Apply
+            id: apply
+            if: github.ref_name == 'main' && (github.event_name == 'push' || steps.approval.outputs.approved == 'true')
+            run: terraform apply --auto-approve saved_plan
+            working-directory: ./TerraformScripts
+
+            # This Step sends a Notification to the pod-b-github-actions channel in Slack if any Job fails in the Main Branch
+          - name: Slack Notification
+            id: slack
+            if: failure() && github.ref_name == 'main'
+            uses: slackapi/slack-github-action@v1.26.0
+            with:
+              payload: |
+                {
+                  "text": "GitHub Action build result: ${{ job.status }}",
+                  "blocks": [
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "GitHub Action build failed in repository ${{ github.repository }}\n\nBranch: ${{ github.ref }}\nCommit: ${{ github.sha }}\nFailed Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                      }
+                    }
+                  ]
+                }
+            env:
+              SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+              SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
 
 
