@@ -3,7 +3,7 @@ name: Implement Build Steps in GitHub Actions Workflow for Terraform Plan and Ap
   push:
     branches:
       - main
-      - feature/*
+      - feature*
   pull_request:
     types:
       - opened
