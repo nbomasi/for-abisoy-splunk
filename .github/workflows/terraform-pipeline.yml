@@ -22,6 +22,47 @@ jobs:
       issues: write
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run TFSec scan
+        id: tfsec-scan
+        run: |
+          tfsec --format json --out tfsec-results.json
+
+      - name: Check TFSec results
+        id: tfsec-results
+        run: |
+          CRITICAL=$(jq '[.results[] | select(.severity == "CRITICAL")] | length' tfsec-results.json)
+          HIGH=$(jq '[.results[] | select(.severity == "HIGH")] | length' tfsec-results.json)
+          MEDIUM=$(jq '[.results[] | select(.severity == "MEDIUM")] | length' tfsec-results.json)
+          LOW=$(jq '[.results[] | select(.severity == "LOW")] | length' tfsec-results.json)
+
+          echo "CRITICAL: $CRITICAL"
+          echo "HIGH: $HIGH"
+          echo "MEDIUM: $MEDIUM"
+          echo "LOW: $LOW"
+
+          if [ "$CRITICAL" -gt 0 ] || [ "$HIGH" -gt 0 ]; then
+            echo "TFSec detected critical or high-severity issues"
+            # Trigger Slack notification for critical/high-severity issues
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"TFSec detected critical or high-severity issues in the Terraform codebase."}' $SLACK_WEBHOOK_URL
+            exit 1
+          fi
+
+      - name: Upload TFSec results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: tfsec-results
+          path: tfsec-results.json
+
+      - name: Report TFSec results
+        if: always()
+        run: |
+          jq -r '.results[] | "\(.severity): \(.description)"' tfsec-results.json
+
+      # Setting up Docker    
       - name: Verify Docker Group
         run: |
           sudo usermod -aG docker $USER
