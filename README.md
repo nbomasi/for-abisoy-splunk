@@ -50,8 +50,3 @@ The project aims to initialize a Github Actions CI/CD pipeline for Terraform to 
     You can also use the following command: gh run rerun <run_id>
 
 
-
-
-
-
-
