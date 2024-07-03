@@ -19,7 +19,9 @@ jobs:
         permissions:
           contents: read
           issues: write
+          
         steps:
+        # This step scans the terraform codes to identify security issues and best practices violations. 
           - name: Clone repo
             uses: actions/checkout@master
 
@@ -57,6 +59,8 @@ jobs:
             id: init
             run: terraform init
             working-directory: ./TerraformScripts
+
+          # This Step is only executed if the name of the Branch is either Main or starts with feature
           - name: Terraform Plan
             id: plan
             if: 'github.ref_name == ''main'' || startsWith(github.ref_name, ''feature/'')'
