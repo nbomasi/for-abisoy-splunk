@@ -49,3 +49,38 @@ The project aims to initialize a Github Actions CI/CD pipeline for Terraform to 
     Click on the "Re-run jobs" button
     You can also use the following command: gh run rerun <run_id>
 
+<<<<<<< HEAD
+=======
+# Slack Notification Setup
+
+* Create a [Slack App](https://api.slack.com/apps) for your workspace (alternatively use an existing app you have already created and installed).
+* Add the [incoming-webhook](https://api.slack.com/scopes/incoming-webhook) bot scope under OAuth & Permissions.
+* Install the app to your workspace (you will select a channel to notify)
+* Activate and create a new webhook under Incoming Webhooks.
+* Copy the Webhook URL from the Webhook you just generated [add it as a secret in your repo settings](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository) named SLACK_WEBHOOK_URL.
+
+```
+- name: Send custom JSON data to Slack workflow
+  id: slack
+  uses: slackapi/slack-github-action@v1.26.0
+  with:
+    # For posting a rich message using Block Kit
+    payload: |
+      {
+        "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+        "blocks": [
+          {
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+            }
+          }
+        ]
+      }
+  env:
+    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+
+>>>>>>> main
