@@ -49,6 +49,8 @@ The project aims to initialize a Github Actions CI/CD pipeline for Terraform to 
     Click on the "Re-run jobs" button
     You can also use the following command: gh run rerun <run_id>
 
+<<<<<<< HEAD
+=======
 # Slack Notification Setup
 
 * Create a [Slack App](https://api.slack.com/apps) for your workspace (alternatively use an existing app you have already created and installed).
@@ -81,3 +83,4 @@ The project aims to initialize a Github Actions CI/CD pipeline for Terraform to 
     SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
 
+>>>>>>> main

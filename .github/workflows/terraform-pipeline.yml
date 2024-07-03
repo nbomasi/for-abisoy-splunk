@@ -1,19 +1,17 @@
 name: Implement Build Steps in GitHub Actions Workflow for Terraform Plan and Apply
-on:
-    push:
-        branches:
-            - main
-            - feature/*
-    pull_request:
-        types:
-            - opened
-            - synchronize
-
+'on':
+  push:
+    branches:
+      - main
+      - feature/*
+  pull_request:
+    types:
+      - opened
+      - synchronize
 env:
-    AWS_REGION: eu-west-1
-    AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
+  AWS_REGION: eu-west-1
+  AWS_ACCESS_KEY: '${{ secrets.AWS_ACCESS_KEY_ID }}'
+  AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
 jobs:
     Build-Infra:
         name: Terraform CICD
@@ -21,7 +19,19 @@ jobs:
         permissions:
           contents: read
           issues: write
+          
         steps:
+        # This step scans the terraform codes to identify security issues and best practices violations. 
+          - name: Clone repo
+            uses: actions/checkout@master
+
+          - name: tfsec
+            uses: aquasecurity/tfsec-action@v1.0.0
+            # with:
+            #   minimum_severity: CRITICAL
+            #                     HIGH
+            continue-on-error: true
+              
           - name: Set up Docker
             uses: byloth/docker-setup-action@v1
 
@@ -50,10 +60,10 @@ jobs:
             run: terraform init
             working-directory: ./TerraformScripts
 
-        # This Step is only executed if the name of the Branch is either Main or starts with feature
+          # This Step is only executed if the name of the Branch is either Main or starts with feature
           - name: Terraform Plan
             id: plan
-            if: github.ref_name == 'main' || startsWith(github.ref_name, 'feature/')
+            if: 'github.ref_name == ''main'' || startsWith(github.ref_name, ''feature/'')'
             run: terraform plan -out saved_plan
             working-directory: ./TerraformScripts
             
