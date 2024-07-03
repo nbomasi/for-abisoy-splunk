@@ -3,7 +3,7 @@ name: Implement Build Steps in GitHub Actions Workflow for Terraform Plan and Ap
   push:
     branches:
       - main
-      - feature*
+      - feature/*
   pull_request:
     types:
       - opened
@@ -20,6 +20,16 @@ jobs:
           contents: read
           issues: write
         steps:
+          - name: Clone repo
+            uses: actions/checkout@master
+
+          - name: tfsec
+            uses: aquasecurity/tfsec-action@v1.0.0
+            # with:
+            #   minimum_severity: CRITICAL
+            #                     HIGH
+            continue-on-error: true
+              
           - name: Set up Docker
             uses: byloth/docker-setup-action@v1
 
