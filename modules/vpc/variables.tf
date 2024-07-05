@@ -15,12 +15,22 @@ variable "enable_dns_hostnames" {
 
 variable "public_subnet_cidrs" {
   description = "A list of CIDR blocks for public subnets"
-  type        = list(string)
+  type        = list(any)
 }
 
 variable "private_subnet_cidrs" {
   description = "A list of CIDR blocks for private subnets"
-  type        = list(string)
+  type        = list(any)
+}
+
+variable "preferred_number_of_public_subnets" {
+  type        = number
+  description = "Number of public subnets"
+}
+
+variable "preferred_number_of_private_subnets" {
+  type        = number
+  description = "Number of private subnets"
 }
 
 variable "availability_zones" {
@@ -28,10 +38,10 @@ variable "availability_zones" {
   type        = list(string)
 }
 
-variable "pod" {
-  description = "Pod identifier"
-  type        = string
-}
+ variable "pod" {
+   description = "Pod identifier"
+   type        = string
+ }
 
 variable "environment" {
   description = "Environment (e.g., sandbox, staging, production)"

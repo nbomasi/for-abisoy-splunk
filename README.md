@@ -49,8 +49,6 @@ The project aims to initialize a Github Actions CI/CD pipeline for Terraform to 
     Click on the "Re-run jobs" button
     You can also use the following command: gh run rerun <run_id>
 
-<<<<<<< HEAD
-=======
 # Slack Notification Setup
 
 * Create a [Slack App](https://api.slack.com/apps) for your workspace (alternatively use an existing app you have already created and installed).
@@ -82,5 +80,34 @@ The project aims to initialize a Github Actions CI/CD pipeline for Terraform to 
     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
+```
 
->>>>>>> main
+# How to use tfvars Files for Different Environments in Terraform
+
+* Create tfvars files for each environment e.g sandbox.tfvars, staging.tfvars etc and add the variables as shown below
+
+sandbox.tfvars
+```
+environment   = "sandbox"
+instance_type = "t2.micro"
+region        = "us-west-2"
+
+```
+
+staging.tfvars
+
+```
+environment   = "staging"
+instance_type = "t2.medium"
+region        = "us-east-1"
+
+```
+* Reference the variables In in the Terraform configuration files (e.g., main.tf)
+* Initialize Terraform in the project directory then preview the changes Terraform will make by using the plan command with the appropriate tfvars file.
+```
+terraform plan -var-file="sandbox.tfvars"
+```
+* Then apply the configuration for the specific environment by specifing the appropriate tfvars file for the environment.
+```
+terraform apply --auto-approve -var-file="sandbox.tfvars"
+```
