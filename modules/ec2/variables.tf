@@ -8,6 +8,11 @@ variable "instance_type" {
   type        = string
 }
 
+variable "vpc_id" {
+  type        = string
+  description = "the vpc id"
+}
+
 variable "key_name" {
   description = "Name of the SSH key pair"
   type        = string
@@ -18,9 +23,19 @@ variable "subnet_ids" {
   type        = list(string)
 }
 
-variable "vpc_security_group_ids" {
+variable "vpc_security_groups" {
   description = "List of security group IDs"
   type        = list(string)
+}
+
+variable "root_volume_size" {
+  description = "Volume size of EBS"
+  type = number
+}
+
+variable "root_volume_type" {
+  description = "Volume type of EBS"
+  type = string
 }
 
 variable "ami_name_filter" {
