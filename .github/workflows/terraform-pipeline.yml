@@ -11,14 +11,7 @@ name: Implement Build Steps in GitHub Actions Workflow for Terraform Plan and Ap
           - sandbox
           - staging
           - production
-  push:
-    branches:
-      - main
-      - feature/*
-  pull_request:
-    types:
-      - opened
-      - synchronize
+
 env:
   AWS_REGION: us-east-1
   
@@ -31,7 +24,7 @@ jobs:
           issues: write
           
         steps:
-        # This step scans the terraform codes to identify security issues and best practices violations. 
+        # This step scans the terraform codes to identify security issues and best practices violations.
           - name: Clone repo
             uses: actions/checkout@master
 
@@ -89,7 +82,7 @@ jobs:
         # This Step Requires Approval from owner or maintainer whom has the required Github token to proceed further
           - name: Manual Approval
             id: approval
-            if: github.event_name == 'push' && startsWith(github.ref_name, 'main')
+            if: github.ref_name == 'main'
             uses: trstringer/manual-approval@v1
             with:
               approvers: Mitchxxx,uzukwujp
@@ -105,7 +98,7 @@ jobs:
 
           - name: Terraform Apply
             id: apply
-            if: github.ref_name == 'main' && (github.event_name == 'push' || steps.approval.outputs.approved == 'true')
+            if: github.ref_name == 'main' && steps.approval.outputs.approved == 'true'
             run: terraform apply --auto-approve saved_plan
 
             # This Step sends a Notification to the pod-b-github-actions channel in Slack if any Job fails in the Main Branch
