@@ -18,19 +18,23 @@ module "vpc" {
 }
 
 module "ec2_instance" {
-  source              = "./modules/ec2"
-  instance_count      = var.instance_count
-  instance_type       = var.instance_type
-  key_name            = var.key_name
-  subnet_ids          = module.vpc.public_subnet_ids
-  vpc_security_groups = var.vpc_security_groups
-  ami_name_filter     = var.ami_name_filter
-  ami_owner           = var.ami_owner
-  pod                 = var.pod
-  root_volume_size    = var.root_volume_size
-  root_volume_type    = var.root_volume_type
-  environment         = var.environment
-  tags                = var.default_tags
-  vpc_id              = module.vpc.vpc_id
+  source               = "./modules/ec2"
+  instance_count       = var.instance_count
+  instance_type        = var.instance_type
+  key_name             = var.key_name
+  subnet_ids           = module.vpc.public_subnet_ids
+  vpc_security_groups  = var.vpc_security_groups
+  ami_name_filter      = var.ami_name_filter
+  ami_owner            = var.ami_owner
+  pod                  = var.pod
+  root_volume_size     = var.root_volume_size
+  root_volume_type     = var.root_volume_type
+  environment          = var.environment
+  tags                 = var.default_tags
+  vpc_id               = module.vpc.vpc_id
+  use_asg              = var.use_asg
+  asg_min_size         = var.asg_min_size
+  asg_max_size         = var.asg_max_size
+  asg_desired_capacity = var.asg_desired_capacity
 }
 

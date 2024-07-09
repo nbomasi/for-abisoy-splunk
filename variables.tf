@@ -1,56 +1,55 @@
 variable "aws_region" {
   description = "AWS region"
+  default     = "us-east-1"
+}
+
+variable "ami_owner" {
+  description = "AMI owner ID"
   type        = string
 }
 
+variable "ami_name_filter" {
+  description = "Filter for AMI name"
+  type        = string
+}
+
+variable "availability_zones" {
+  description = "List of availability zones"
+  type        = list(string)
+}
+
 variable "cidr_block" {
-  description = "The CIDR block for the VPC"
+  description = "CIDR block for the VPC"
   type        = string
 }
 
 variable "enable_dns_support" {
-  description = "Should be true to enable DNS support in the VPC"
+  description = "Enable DNS support in the VPC"
   type        = bool
 }
 
 variable "enable_dns_hostnames" {
-  description = "Should be true to enable DNS hostnames in the VPC"
+  description = "Enable DNS hostnames in the VPC"
   type        = bool
 }
 
-
-variable "availability_zones" {
-  description = "A list of availability zones for the subnets"
-  type        = list(string)
-}
-
-variable "preferred_number_of_public_subnets" {
-  type        = number
-  description = "Number of public subnets"
-}
-
-variable "preferred_number_of_private_subnets" {
-  type        = number
-  description = "Number of private subnets"
-}
-
-variable "instance_count" {
-  description = "Number of instances to launch"
-  type        = number
-}
-
-variable "instance_type" {
-  description = "Type of instance to launch"
+variable "environment" {
+  description = "Environment (e.g., sandbox, staging, production)"
   type        = string
 }
 
-variable "root_volume_size" {
-  description = "Volume size of EBS"
+variable "instance_type" {
+  description = "Instance type for EC2"
+  type        = string
+}
+
+variable "instance_count" {
+  description = "Number of EC2 instances"
   type        = number
 }
 
-variable "root_volume_type" {
-  description = "Volume type of EBS"
+variable "key_name" {
+  description = "Key name for EC2 instances"
   type        = string
 }
 
@@ -59,9 +58,29 @@ variable "pod" {
   type        = string
 }
 
-variable "key_name" {
-  description = "Name of the SSH key pair"
+variable "preferred_number_of_private_subnets" {
+  description = "Preferred number of private subnets"
+  type        = number
+}
+
+variable "preferred_number_of_public_subnets" {
+  description = "Preferred number of public subnets"
+  type        = number
+}
+
+variable "root_volume_size" {
+  description = "Root volume size in GB"
+  type        = number
+}
+
+variable "root_volume_type" {
+  description = "Root volume type"
   type        = string
+}
+
+variable "default_tags" {
+  description = "A map of default tags to assign to resources"
+  type        = map(string)
 }
 
 variable "vpc_security_groups" {
@@ -69,23 +88,26 @@ variable "vpc_security_groups" {
   type        = list(string)
 }
 
-variable "ami_name_filter" {
-  description = "Filter for AMI name"
-  type        = string
+variable "use_asg" {
+  description = "Flag to toggle between standalone EC2 instance and Auto Scaling Group"
+  type        = bool
+  default     = false
 }
 
-variable "ami_owner" {
-  description = "AMI owner ID"
-  type        = string
+variable "asg_min_size" {
+  description = "Minimum size of the Auto Scaling Group"
+  type        = number
+  default     = 1
 }
 
-
-variable "environment" {
-  description = "Environment (e.g., sandbox, staging, production)"
-  type        = string
+variable "asg_max_size" {
+  description = "Maximum size of the Auto Scaling Group"
+  type        = number
+  default     = 3
 }
 
-variable "default_tags" {
-  description = "A map of tags to assign to the resources"
-  type        = map(string)
+variable "asg_desired_capacity" {
+  description = "Desired capacity of the Auto Scaling Group"
+  type        = number
+  default     = 1
 }
