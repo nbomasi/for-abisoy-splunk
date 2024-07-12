@@ -111,3 +111,30 @@ terraform plan -var-file="sandbox.tfvars"
 ```
 terraform apply --auto-approve -var-file="sandbox.tfvars"
 ```
+
+```
+# EC2 Module Documentation
+Overview
+The EC2 module can now support both standalone EC2 instances and Auto Scaling Groups (ASGs). This flexibility allows you to deploy either a single EC2 instance or a group of instances that can scale automatically based on demand.
+
+Variables
+. use_asg: Boolean flag to toggle between standalone EC2 instances and Auto Scaling Groups.
+. instance_count: Number of EC2 instances to create (only applicable when use_asg is false).
+. instance_type: The type of instance to start (e.g., t2.micro).
+. key_name: Key pair name to access the EC2 instances.
+. subnet_ids: List of subnet IDs where instances or ASG will be deployed.
+. vpc_security_groups: List of security group IDs to associate with the instances or ASG.
+. ami_name_filter: Filter to select the AMI by name.
+. ami_owner: The owner of the AMI.
+. desired_capacity: Desired number of instances in the ASG (only applicable when use_asg is true).
+. min_size: Minimum size of the ASG (only applicable when use_asg is true).
+. max_size: Maximum size of the ASG (only applicable when use_asg is true).
+. pod: Pod name for tagging.
+. root_volume_size: Size of the root volume in GiB.
+. root_volume_type: Type of the root volume (e.g., gp2 or gp3).
+. environment: Environment name for tagging.
+. tags: Additional tags to associate with the instances or ASG.
+
+Conclusion
+The above Terraform module and examples demonstrate how to use the use_asg variable to toggle between standalone EC2 instances and Auto Scaling Groups. By following the provided examples, you can easily deploy either a single EC2 instance or an ASG in your AWS environment. This flexibility allows for scalable and resilient infrastructure that can adapt to varying workloads.
+```
