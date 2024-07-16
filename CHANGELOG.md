@@ -20,3 +20,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Security
+
+## [Unreleased] - 2024-07-17
+
+### Added
+- [TDP-281](https://davidwinston317.atlassian.net/browse/TDP-281) :
+  Implemented TFSec in Terraform GitHub Actions Pipeline for Terraform.
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security

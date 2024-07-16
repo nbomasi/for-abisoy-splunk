@@ -28,13 +28,6 @@ jobs:
           - name: Clone repo
             uses: actions/checkout@master
 
-          - name: tfsec
-            uses: aquasecurity/tfsec-action@v1.0.0
-            # with:
-            #   minimum_severity: CRITICAL
-            #                     HIGH
-            continue-on-error: true
-              
           - name: Set up Docker
             uses: byloth/docker-setup-action@v1
 
@@ -48,6 +41,9 @@ jobs:
 
           - name: Install unzip
             run: sudo apt-get install unzip -y
+
+          - name: Install tfsec
+            run: curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
 
           - name: Set up Terraform
             uses: hashicorp/setup-terraform@v2
@@ -78,6 +74,33 @@ jobs:
             id: plan
             if: 'github.ref_name == ''main'' || startsWith(github.ref_name, ''feature/'')'
             run: terraform plan -var-file="environments/${{ env.TF_VAR_environment }}/${{ env.TF_VAR_environment }}.tfvars" -out saved_plan
+
+        # This Step is executes tfsec to scan the terraform scripts for vulnerabilities, outputs the report in json format,
+        # and closes the pipeline if there are any Critical or High errors detected.
+          - name: Run tfsec for all severities
+            run: |
+              tfsec --no-colour  -s -f=json > tfsec-results.json
+              tfsec_output=$(cat tfsec-results.json)
+              echo "All tfsec results:"
+              echo "$tfsec_output"
+              
+              # Check if there are critical or high severity issues
+              echo "Checking for MEDIUM or LOW severity issues..."
+              if [[ $(jq '.results[] | select(.severity == "LOW" or .severity == "MEDIUM")' <<< "$tfsec_output") ]]; then
+                echo "Warning: MEDIUM or LOW severity issues found."
+              else
+                echo "No MEDIUM or LOW severity issues found."
+              fi
+
+              echo "Checking for CRITICAL or HIGH severity issues..."
+              if [[ $(jq '.results[] | select(.severity == "CRITICAL" or .severity == "HIGH")' <<< "$tfsec_output") ]]; then
+                echo "CRITICAL or HIGH severity issues found. Failing the job."
+                MESSAGE="Critical or High severity issues detected in terraform scripts"
+                curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"$MESSAGE\"}" ${{ secrets.SLACK_WEBHOOK_URL }}
+                exit 1
+              else
+                echo "No CRITICAL or HIGH severity issues found."
+              fi
             
         # This Step Requires Approval from owner or maintainer whom has the required Github token to proceed further
           - name: Manual Approval

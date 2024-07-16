@@ -149,3 +149,31 @@ Please ensure that every change is documented in the [CHANGELOG](./CHANGELOG.md)
 This helps us provide a clear history of changes, improve collaboration, and assist in auditing and troubleshooting.
 
 
+
+# TFSec Integration for terraform
+
+[*tfsec*](https://aquasecurity.github.io/tfsec/v0.63.1/) is a static analysis security scanner for your Terraform code. Designed to run locally and in your CI pipelines, developer-friendly output and fully documented checks mean detection and remediation can take place as quickly and efficiently as possible.
+### TFSec Scan Results Interpretation
+TFSec generates scan results in JSON format, categorizing issues by severity levels: CRITICAL, HIGH, MEDIUM, and LOW. Each result includes:
+#### Issue Description:
+Details on the security issue or best practice violation detected. Severity Level: Indicates the criticality of the issue. Location: Specifies the file and line number where the issue was found.
+### Interpreting Severity Levels
+CRITICAL and HIGH: These issues pose significant security risks and should be addressed immediately. MEDIUM and LOW: While less critical, these issues should still be reviewed and resolved to maintain best practices and security hygiene.
+### Ignoring Warnings
+You may wish to ignore some warnings. If you'd like to do so, you can simply add a comment containing tfsec:ignore: to the offending line in your templates. If the problem refers to a block of code, such as a multiline string, you can add the comment on the line above the block, by itself.
+For example, to ignore an open security group rule:
+```
+resource "aws_security_group_rule" "my-rule" {
+    type = "ingress"
+    cidr_blocks = ["0.0.0.0/0"] #tfsec:ignore:aws-vpc-no-public-ingress-sgr
+}
+```
+...or...
+```
+resource "aws_security_group_rule" "my-rule" {
+    type = "ingress"
+    #tfsec:ignore:aws-vpc-no-public-ingress-sgr
+    cidr_blocks = ["0.0.0.0/0"]
+}
+```
+
