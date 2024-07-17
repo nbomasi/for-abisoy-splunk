@@ -96,7 +96,7 @@ jobs:
               if [[ $(jq '.results[] | select(.severity == "CRITICAL" or .severity == "HIGH")' <<< "$tfsec_output") ]]; then
                 echo "CRITICAL or HIGH severity issues found. Failing the job."
                 MESSAGE="Critical or High severity issues detected in terraform scripts"
-                curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"$MESSAGE\nFailed Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}" ${{ secrets.SLACK_WEBHOOK_URL }}
+                curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"$MESSAGE\n\nBranch: ${{ github.ref }}\nFailed Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}" ${{ secrets.SLACK_WEBHOOK_URL }}
                 exit 1
               else
                 echo "No CRITICAL or HIGH severity issues found."
