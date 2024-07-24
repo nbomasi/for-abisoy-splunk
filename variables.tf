@@ -111,3 +111,42 @@ variable "asg_desired_capacity" {
   type        = number
   default     = 1
 }
+
+
+variable "bucket_name" {
+  description = "The name of the S3 bucket"
+  type        = string
+  default     = "my-terraform-state-bucket"
+}
+
+variable "dynamodb_table_name" {
+  description = "The name of the DynamoDB table"
+  type        = string
+  default     = "terraform-state-lock"
+}
+
+variable "user_name" {
+  description = "The name of the IAM user"
+  type        = string
+}
+
+variable "aws_account_id" {
+  description = "The AWS account ID"
+  type        = string
+}
+
+variable "role_name" {
+  description = "The name of the IAM role"
+  type        = string
+}
+
+variable "s3-policy_name" {
+  description = "The name of the IAM policy"
+  type        = string
+}
+
+variable "dynamodb-policy_name" {
+  description = "The name of the IAM policy"
+  type        = string
+}
+
