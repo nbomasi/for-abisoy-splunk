@@ -38,3 +38,30 @@ module "ec2_instance" {
   asg_desired_capacity = var.asg_desired_capacity
 }
 
+module "s3" {
+  source = "./modules/s3"
+
+  bucket_name = var.bucket_name
+  tags        = var.default_tags
+}
+
+module "dynamodb" {
+  source = "./modules/dynamodb"
+
+  dynamodb_table_name = var.dynamodb_table_name
+  tags                = var.default_tags
+}
+
+module "iam" {
+  source = "./modules/iam"
+
+  bucket_name         = var.bucket_name
+  dynamodb_table_name = var.dynamodb_table_name
+  user_name           = var.user_name
+  aws_account_id      = var.aws_account_id
+  role_name           = var.role_name
+  s3-policy_name      = var.s3-policy_name
+  dynamodb-policy_name = var.dynamodb-policy_name
+}
+
+
