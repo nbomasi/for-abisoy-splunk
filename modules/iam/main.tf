@@ -68,6 +68,30 @@ resource "aws_iam_policy" "terraform_dynamodb_policy" {
   })
 }
 
+# Define Transit Gateway Policy
+resource "aws_iam_policy" "transit_gateway_policy" {
+  name        = "TransitGatewayPolicy"
+  description = "Policy for managing Transit Gateway"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "ec2:CreateTransitGateway",
+          "ec2:DeleteTransitGateway",
+          "ec2:DescribeTransitGateways",
+          "ec2:CreateTransitGatewayAttachment",
+          "ec2:DeleteTransitGatewayAttachment",
+          "ec2:DescribeTransitGatewayAttachments"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
 # Attach S3 Policy to IAM User
 resource "aws_iam_user_policy_attachment" "terraform_user_s3_policy_attachment" {
   user       = aws_iam_user.terraform_user.name
@@ -90,4 +114,10 @@ resource "aws_iam_role_policy_attachment" "terraform_role_s3_policy_attachment" 
 resource "aws_iam_role_policy_attachment" "terraform_role_dynamodb_policy_attachment" {
   role       = aws_iam_role.terraform_role.name
   policy_arn = aws_iam_policy.terraform_dynamodb_policy.arn
+}
+
+# Attach Transit Gateway Policy to IAM Role
+resource "aws_iam_role_policy_attachment" "transit_gateway_policy_attachment" {
+  role       = aws_iam_role.terraform_role.name
+  policy_arn = aws_iam_policy.transit_gateway_policy.arn
 }

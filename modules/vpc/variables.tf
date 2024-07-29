@@ -39,8 +39,8 @@ variable "availability_zones" {
 }
 
  variable "pod" {
-   description = "Pod identifier"
-   type        = string
+    description = "Pod identifier"
+    type        = string
  }
 
 variable "environment" {
@@ -51,4 +51,9 @@ variable "environment" {
 variable "tags" {
   description = "A map of tags to assign to the resources"
   type        = map(string)
+}
+
+variable "amazon_side_asn" {
+    description = "Private Autonomous System Number (ASN) for the Amazon side of a BGP session"
+    type = number
 }

@@ -22,3 +22,7 @@ output "asg_name" {
   description = "The name of the Auto Scaling Group"
   value       = module.ec2_instance.asg_name
 }
+output "transit_gateway_id" {
+  description = "The IDs of the instances"
+  value       = module.vpc.transit_gateway_id
+}

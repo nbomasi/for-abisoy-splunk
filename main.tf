@@ -14,6 +14,7 @@ module "vpc" {
   pod                                 = var.pod
   availability_zones                  = var.availability_zones
   environment                         = var.environment
+  amazon_side_asn                     = var.amazon_side_asn
   tags                                = var.default_tags
 }
 
@@ -55,12 +56,12 @@ module "dynamodb" {
 module "iam" {
   source = "./modules/iam"
 
-  bucket_name         = var.bucket_name
-  dynamodb_table_name = var.dynamodb_table_name
-  user_name           = var.user_name
-  aws_account_id      = var.aws_account_id
-  role_name           = var.role_name
-  s3-policy_name      = var.s3-policy_name
+  bucket_name          = var.bucket_name
+  dynamodb_table_name  = var.dynamodb_table_name
+  user_name            = var.user_name
+  aws_account_id       = var.aws_account_id
+  role_name            = var.role_name
+  s3-policy_name       = var.s3-policy_name
   dynamodb-policy_name = var.dynamodb-policy_name
 }
 
