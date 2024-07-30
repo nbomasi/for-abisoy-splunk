@@ -150,3 +150,7 @@ variable "dynamodb-policy_name" {
   type        = string
 }
 
+variable "amazon_side_asn" {
+  description = "Private Autonomous System Number (ASN) for the Amazon side of a BGP session"
+  type        = number
+}

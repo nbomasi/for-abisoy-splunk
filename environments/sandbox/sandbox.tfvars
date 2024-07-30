@@ -22,6 +22,7 @@ role_name           = "devops-pod-b-role-sandbox"
 s3-policy_name      = "devops-pod-b-s3-policy-sandbox"
 dynamodb-policy_name = "devops-pod-b-dynamodb-policy-sandbox"
 state_file_key      = "${var.environment}/terraform.tfstate"
+amazon_side_asn = 64512
 default_tags = {
   ManagedBy = "Terraform"
   Environment = "Sandbox"

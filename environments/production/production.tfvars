@@ -15,6 +15,7 @@ preferred_number_of_public_subnets = 2
 root_volume_size = 30
 root_volume_type = "gp3"
 aws_account_id = "938106001005"
+amazon_side_asn = 64512
 user_name = "devops-pod-b-terraform-production"
 bucket_name = "devops-pod-b-bucket-production"
 dynamodb_table_name = "devops-pod-b-dynamodb-production"

@@ -177,20 +177,19 @@ resource "aws_security_group_rule" "my-rule" {
 }
 ```
 
-```
-Documentation: Setting Up and Configuring the Terraform Backend with S3 and DynamoDB
+# Documentation: Setting Up and Configuring the Terraform Backend with S3 and DynamoDB
 
-Overview
+## Overview
 
 This documentation provides instructions on setting up and configuring the Terraform backend using Amazon S3 for state file storage and DynamoDB for state locking. It also includes guidelines for managing and troubleshooting backend configuration issues.
 
-Prerequisites
+### Prerequisites
 
 . AWS CLI installed and configured with appropriate credentials
 . Terraform installed
 . AWS account with permissions to create and manage S3 buckets, DynamoDB tables, and IAM roles/policies
 
-Backend Configuration Steps
+### Backend Configuration Steps
 1. Create an S3 Bucket for State Files
 Create the S3 bucket:
 aws s3api create-bucket --bucket my-terraform-state-bucket --region us-east-1 --create-bucket-configuration LocationConstraint=us-east-1
@@ -211,7 +210,7 @@ aws s3api put-bucket-versioning --bucket my-terraform-state-bucket --versioning-
     }
   ]
 }
-Save this as lifecycle.json and apply it:
+### Save this as lifecycle.json and apply it:
 aws s3api put-bucket-lifecycle-configuration --bucket my-terraform-state-bucket --lifecycle-configuration file://lifecycle.json
 
 2. Create a DynamoDB Table for State Locking
@@ -319,5 +318,62 @@ Steps to Debug
 . Run Terraform with detailed logging to capture more information about the backend configuration process:
 TF_LOG=DEBUG terraform init
 
-Summary
+### Summary
 This documentation provides a step-by-step guide to setting up and configuring the Terraform backend with S3 and DynamoDB. It also includes tips for managing and troubleshooting common issues with backend configuration. Ensure that you have the necessary AWS permissions and that your Terraform configuration correctly references the S3 bucket and DynamoDB table.
+
+
+
+# AWS Transit Gateway
+
+A [transit gateway](https://docs.aws.amazon.com/vpc/latest/tgw/tgw-transit-gateways.html) enables you to attach VPCs and VPN connections and route traffic between them. In simpler terms, AWS Transit Gateway is like a central hub that connects your Amazon Virtual Private Clouds (VPCs) and on-premises networks. It simplifies your network and eliminates complicated peering relationships. It functions as a cloud router, establishing new connections only once.
+
+The VPC module can now support the the provision of a transit gateway and connects the VPC to it. Adding a Transit Gateway to a VPC module in Terraform involves several steps
+
+### Step 1:
+* You need to define the Transit Gateway resource in your Terraform configuration add the following code to the main.tf for VPC module or you can create a new file e.g. transit_gateway.tf in the VPC module:
+```
+resource "aws_ec2_transit_gateway" "transit_gateway" {
+  description = "Example Transit Gateway"
+  amazon_side_asn = 64512
+
+  tags = {
+    Name = "example-transit-gateway"
+  }
+}
+```
+
+### Step 2:
+* Attach the Transit Gateway to your VPC. Assuming your VPC module outputs the VPC ID and has subnets defined, you can create a Transit Gateway attachment with the the following code below in the transit-gateway.tf file
+
+```
+resource "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_attachment" {
+  transit_gateway_id = aws_ec2_transit_gateway.transit_gateway.id
+  vpc_id             = module.vpc.vpc_id
+  subnet_ids         = module.vpc.public_subnets
+
+  tags = {
+    Name = "example-transit-gateway-attachment"
+  }
+}
+```
+
+### Step 3:
+• Create a Route table for the transit Gateway
+```
+resource "aws_route_table" "transit-gateway-route-table" {
+  vpc_id = aws_vpc.main.id
+}
+```
+
+### Step 4:
+• Create the Route for the Transit Gateway
+
+```
+resource "aws_route" "transit_gateway_route" {
+  route_table_id = aws_route_table.transit-gateway-route-table.id
+  destination_cidr_block = "0.0.0.0/0"
+  transit_gateway_id = aws_ec2_transit_gateway.transit_gateway.id
+
+}
+```
+With this setup, you can create a Transit Gateway, attach it to your VPC, and update the routing tables to use the Transit Gateway for outbound traffic. 

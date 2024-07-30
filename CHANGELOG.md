@@ -36,3 +36,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Security
+
+## [Unreleased] - 2024-07-29
+
+### Added
+
+### Changed
+- [TDP-291](https://davidwinston317.atlassian.net/browse/TDP-291) :
+  Update Terraform module for VPC to set up Transit Gateway.
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
