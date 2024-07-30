@@ -65,6 +65,18 @@ module "iam" {
   dynamodb-policy_name = var.dynamodb-policy_name
 }
 
+module "alb" {
+  source              = "./modules/alb" # Path to the ALB module
+  alb_name            = var.alb_name
+  internal            = var.internal
+  load_balancer_type  = var.load_balancer_type
+  vpc_id              = module.vpc.vpc_id
+  subnets             = module.vpc.public_subnet_ids
+  alb_security_groups = [module.alb.alb_sg_id]
+  tags                = merge(var.tags, { Name = "alb" })
+  ingress_rules       = var.ingress_rules
+}
+
 module "aws_route53_zone" {
   source      = "./modules/route53"
   vpc_id      = module.vpc.vpc_id

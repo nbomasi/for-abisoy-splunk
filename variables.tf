@@ -150,6 +150,41 @@ variable "dynamodb-policy_name" {
   type        = string
 }
 
+variable "tags" {
+  description = "Tags to apply to resources"
+  type        = map(string)
+  default     = {}
+}
+
+variable "alb_name" {
+  description = "The name of the ALB"
+  type        = string
+}
+
+variable "internal" {
+  description = "Whether the ALB is internal or external"
+  type        = bool
+}
+
+variable "load_balancer_type" {
+  description = "The type of the load balancer (application or network)"
+  type        = string
+}
+variable "vpc_id" {
+  description = "The VPC ID in which to create the ALB"
+  type        = string
+}
+
+variable "ingress_rules" {
+  description = "List of ingress rules for the ALB security group"
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+}
+
 variable "amazon_side_asn" {
   description = "Private Autonomous System Number (ASN) for the Amazon side of a BGP session"
   type        = number

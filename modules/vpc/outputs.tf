@@ -14,6 +14,8 @@ output "private_subnet_ids" {
 }
 
 
+
+
 output "public_route_table_ids" {
   description = "The IDs for the Public Route Table"
   value = aws_route_table.public-rtb.id
