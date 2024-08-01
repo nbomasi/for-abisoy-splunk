@@ -65,4 +65,11 @@ module "iam" {
   dynamodb-policy_name = var.dynamodb-policy_name
 }
 
+module "aws_route53_zone" {
+  source      = "./modules/route53"
+  vpc_id      = module.vpc.vpc_id
+  environment = var.environment
+  pod         = var.pod
+}
+
 
