@@ -15,6 +15,7 @@ preferred_number_of_public_subnets = 2
 root_volume_size = 30
 root_volume_type = "gp3"
 aws_account_id = "938106001005"
+amazon_side_asn = 64512
 user_name = "devops-pod-b-terraform-sandbox"
 bucket_name = "devops-pod-b-bucket-sandbox"
 dynamodb_table_name = "devops-pod-b-dynamodb-sandbox"
@@ -22,7 +23,26 @@ role_name           = "devops-pod-b-role-sandbox"
 s3-policy_name      = "devops-pod-b-s3-policy-sandbox"
 dynamodb-policy_name = "devops-pod-b-dynamodb-policy-sandbox"
 state_file_key      = "${var.environment}/terraform.tfstate"
-amazon_side_asn = 64512
+internal            = "false"
+load_balancer_type  = "application"
+alb_name            = "devops-pod-b-alb-sandbox"
+vpc_id              = "aws_vpc.main.id"
+
+ingress_rules = [
+ {
+      from_port   = 80
+      to_port     = 80
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+]
+
 default_tags = {
   ManagedBy = "Terraform"
   Environment = "Sandbox"

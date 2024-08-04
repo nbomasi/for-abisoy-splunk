@@ -23,6 +23,26 @@ role_name           = "devops-pod-b-role-staging"
 s3-policy_name      = "devops-pod-b-s3-policy-staging"
 dynamodb-policy_name = "devops-pod-b-dynamodb-policy-staging"
 state_file_key      = "${var.environment}/terraform.tfstate"
+internal            = "false"
+load_balancer_type  = "application"
+alb_name            = "devops-pod-b-alb-staging"
+vpc_id              = "aws_vpc.main.id"
+
+ingress_rules = [
+ {
+      from_port   = 80
+      to_port     = 80
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+]
+
 default_tags = {
   ManagedBy = "Terraform"
   Environment = "Staging"
