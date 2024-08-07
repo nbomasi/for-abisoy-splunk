@@ -377,3 +377,103 @@ resource "aws_route" "transit_gateway_route" {
 }
 ```
 With this setup, you can create a Transit Gateway, attach it to your VPC, and update the routing tables to use the Transit Gateway for outbound traffic. 
+
+```
+Documentation
+Network Load Balancer (NLB) Provisioning and Configuration
+This documentation provides detailed steps on how to provision and configure a Network Load Balancer (NLB) using Terraform modules. This NLB can be integrated with listeners and Auto Scaling Groups (ASG) in subsequent tasks.
+
+Prerequisites
+Before you begin, ensure you have the following prerequisites:
+
+Terraform installed on your local machine.
+AWS credentials configured on your local machine.
+An existing VPC where the NLB will be deployed.
+Subnets (preferably in multiple availability zones) for the NLB.
+NLB Provisioning
+Define the NLB Module Configuration
+
+In your main.tf file, define the module for provisioning the NLB. This example assumes you have a Terraform module defined for NLB at ./modules/nlb.
+
+hcl
+Copy code
+module "nlb" {
+  source                  = "./modules/nlb"
+  nlb_name                = var.nlb_name
+  internal                = var.internal
+  subnets                 = module.vpc.public_subnet_ids
+  vpc_id                  = module.vpc.vpc_id
+  tags                    = merge(var.tags, { Name = "nlb" })
+  enable_deletion_protection = false
+}
+Variables Definition
+
+Ensure you have the necessary variables defined in your variables.tf file or as part of your module:
+
+hcl
+Copy code
+variable "nlb_name" {
+  description = "The name of the Network Load Balancer"
+  type        = string
+}
+
+variable "internal" {
+  description = "Whether the NLB is internal"
+  type        = bool
+  default     = false
+}
+
+variable "subnets" {
+  description = "A list of subnet IDs for the NLB"
+  type        = list(string)
+}
+
+variable "vpc_id" {
+  description = "The ID of the VPC"
+  type        = string
+}
+
+variable "tags" {
+  description = "A map of tags to assign to the resources"
+  type        = map(string)
+}
+Output Definition
+
+Capture the output values for the NLB to use in other parts of your infrastructure. Add the following to your outputs.tf file:
+
+hcl
+Copy code
+output "nlb_arn" {
+  description = "The ARN of the NLB"
+  value       = module.nlb.nlb_arn
+}
+
+output "nlb_dns_name" {
+  description = "The DNS name of the NLB"
+  value       = module.nlb.nlb_dns_name
+}
+NLB Module Implementation
+Ensure the ./modules/nlb module is implemented correctly. Below is an example of what the main.tf in the NLB module might look like:
+
+hcl
+Copy code
+resource "aws_lb" "nlb" {
+  name               = var.nlb_name
+  internal           = var.internal
+  load_balancer_type = "network"
+  subnets            = var.subnets
+  enable_deletion_protection = var.enable_deletion_protection
+
+  tags = var.tags
+}
+
+output "nlb_arn" {
+  description = "The ARN of the NLB"
+  value       = aws_lb.nlb.arn
+}
+
+output "nlb_dns_name" {
+  description = "The DNS name of the NLB"
+  value       = aws_lb.nlb.dns_name
+}
+```

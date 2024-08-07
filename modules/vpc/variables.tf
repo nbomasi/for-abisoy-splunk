@@ -57,3 +57,9 @@ variable "amazon_side_asn" {
     description = "Private Autonomous System Number (ASN) for the Amazon side of a BGP session"
     type = number
 }
+
+variable "internet_gateway_id" {
+  description = "ID of an existing Internet Gateway (optional)"
+  type        = string
+  default     = ""
+}

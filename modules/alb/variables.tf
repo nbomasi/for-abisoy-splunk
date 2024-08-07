@@ -8,11 +8,6 @@ variable "internal" {
   type        = bool
 }
 
-variable "load_balancer_type" {
-  description = "The type of the load balancer (application or network)"
-  type        = string
-}
-
 variable "vpc_id" {
   description = "The VPC ID in which to create the ALB"
   type        = string
@@ -44,4 +39,5 @@ variable "ingress_rules" {
     protocol    = string
     cidr_blocks = list(string)
   }))
+  default = []
 }
