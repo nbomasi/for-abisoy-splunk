@@ -27,3 +27,20 @@ output "transit_gateway_id" {
   value       = module.vpc.transit_gateway_id
 }
 
+output "nlb_arn" {
+  value = module.nlb.nlb_arn
+}
+
+output "nlb_dns_name" {
+  value = module.nlb.nlb_dns_name
+}
+
+output "alb_security_group_id" {
+  value = module.alb.alb_sg_id
+}
+output "nlb_security_group_id" {
+  value = module.nlb.nlb_sg_id
+}
+
+
+

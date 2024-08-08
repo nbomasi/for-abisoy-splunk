@@ -24,8 +24,8 @@ s3-policy_name      = "devops-pod-b-s3-policy-staging"
 dynamodb-policy_name = "devops-pod-b-dynamodb-policy-staging"
 state_file_key      = "${var.environment}/terraform.tfstate"
 internal            = "false"
-load_balancer_type  = "application"
 alb_name            = "devops-pod-b-alb-staging"
+nlb_name            = "devops-pod-b-nlb-staging"
 vpc_id              = "aws_vpc.main.id"
 
 ingress_rules = [

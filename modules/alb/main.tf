@@ -2,10 +2,16 @@
 resource "aws_lb" "alb" {
   name               = var.alb_name
   internal           = var.internal
-  load_balancer_type = var.load_balancer_type
+  load_balancer_type = "application"
   subnets            = var.subnets
   security_groups    = [aws_security_group.alb_sg.id]
-  tags               = var.tags
+
+  tags = merge(
+    var.tags,
+    {
+      Name = var.alb_name
+    },
+  )
 }
 
 # Security group for alb

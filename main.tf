@@ -69,13 +69,25 @@ module "alb" {
   source              = "./modules/alb" # Path to the ALB module
   alb_name            = var.alb_name
   internal            = var.internal
-  load_balancer_type  = var.load_balancer_type
   vpc_id              = module.vpc.vpc_id
   subnets             = module.vpc.public_subnet_ids
   alb_security_groups = [module.alb.alb_sg_id]
   tags                = merge(var.tags, { Name = "alb" })
   ingress_rules       = var.ingress_rules
 }
+module "nlb" {
+  source        = "./modules/nlb"
+  nlb_name      = var.nlb_name
+  internal      = var.internal
+  subnets       = module.vpc.public_subnet_ids
+  vpc_id        = module.vpc.vpc_id
+  tags          = merge(var.tags, { Name = "nlb" })
+  ingress_rules = var.ingress_rules
+
+  enable_deletion_protection = false
+
+}
+
 
 module "aws_route53_zone" {
   source      = "./modules/route53"

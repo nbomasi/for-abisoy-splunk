@@ -12,6 +12,7 @@ resource "aws_vpc" "main" {
   )
 }
 
+
 # Create an Internet Gateway
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
@@ -64,13 +65,6 @@ resource "aws_route_table" "public" {
   )
 }
 
-# Associate Route Table with Public Subnets
-resource "aws_route_table_association" "public" {
-  count          = var.preferred_number_of_public_subnets == null ? length(data.aws_availability_zones.available.names) : var.preferred_number_of_public_subnets
-  subnet_id      = aws_subnet.public[count.index].id
-  route_table_id = aws_route_table.public.id
-}
-
 resource "aws_subnet" "private" {
   count             = var.preferred_number_of_private_subnets == null ? length(data.aws_availability_zones.available.names) : var.preferred_number_of_private_subnets
   vpc_id            = aws_vpc.main.id
@@ -83,17 +77,6 @@ resource "aws_subnet" "private" {
       Name = format("devops-%s-%s-%s-private-subnet-%d", var.pod, local.timestamp, var.environment, count.index + 1)
     },
   )
-}
-
-resource "aws_internet_gateway" "ig" {
-  vpc_id = aws_vpc.main.id
-  tags = merge(
-    var.tags,
-    {
-      Name = format("devops-%s-%s-internet-gateway-%s", var.pod, local.timestamp, var.environment)
-    },
-  )
-
 }
 
 locals {
