@@ -96,4 +96,10 @@ module "aws_route53_zone" {
   pod         = var.pod
 }
 
+module "alb-nlb" {
+  source      = "./modules/alb-nlb"
+  vpc_id      = module.vpc.vpc_id
+  subnets     = module.vpc.public_subnet_ids
+  environment = var.environment
+}
 
