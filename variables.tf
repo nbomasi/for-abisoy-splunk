@@ -189,3 +189,14 @@ variable "amazon_side_asn" {
   description = "Private Autonomous System Number (ASN) for the Amazon side of a BGP session"
   type        = number
 }
+
+variable "alias_records" {
+  description = "List of Alias records"
+  type = list(object({
+    name                   = string
+    zone_id                = string
+    evaluate_target_health = bool
+    alias_name             = string
+  }))
+  default = []
+}

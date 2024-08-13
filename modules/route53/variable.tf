@@ -12,3 +12,18 @@ variable "pod" {
   description = "Pod identifier"
   type        = string
 }
+
+variable "alias_records" {
+  description = "List of Alias records"
+  type = list(object({
+    name                   = string
+    zone_id                = string
+    evaluate_target_health = bool
+    alias_name             = string
+  }))
+  default = []
+}
+
+variable "alb_arn" {
+  description = "Application load balancer Arn"
+}
