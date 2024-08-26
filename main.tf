@@ -100,10 +100,10 @@ module "aws_route53_zone" {
   alb_arn     = module.alb.alb_arn
   alias_records = [
     {
-      name = module.aws_route53_zone.zone_name
-      zone_id = data.aws_lb.alb.zone_id
+      name                   = module.aws_route53_zone.zone_name
+      zone_id                = data.aws_lb.alb.zone_id
       evaluate_target_health = true
-      alias_name = data.aws_lb.alb.dns_name
+      alias_name             = data.aws_lb.alb.dns_name
 
     }
   ]
@@ -117,3 +117,22 @@ module "alb-nlb" {
   environment = var.environment
 }
 
+module "asg_squid_proxy" {
+  source                      = "./modules/squid-proxy_asg"
+  vpc_id                      = module.vpc.vpc_id
+  ami_name_filter             = var.ami_name_filter
+  ami_owner                   = var.ami_owner
+  instance_type               = var.instance_type
+  pod                         = var.pod
+  environment                 = var.environment
+  squid_subnets_ids           = module.vpc.public_subnet_ids
+  key_name                    = var.key_name
+  root_volume_size            = var.root_volume_size
+  squid_desired_capacity      = var.squid_desired_capacity
+  squid_asg_min_size          = var.squid_asg_min_size
+  squid_asg_max_size          = var.squid_asg_max_size
+  squid_config                = file("${path.module}/squid.conf")
+  squid_scale_up_adjustment   = var.squid_scale_up_adjustment
+  squid_scale_down_adjustment = var.squid_scale_down_adjustment
+  tags                        = var.default_tags
+}

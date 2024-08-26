@@ -53,3 +53,9 @@ use_asg = false
 asg_min_size = 1
 asg_max_size = 3
 asg_desired_capacity = 1
+
+squid_asg_max_size = 2
+squid_asg_min_size = 1
+squid_desired_capacity = 2
+squid_scale_down_adjustment = -1
+squid_scale_up_adjustment = 1
