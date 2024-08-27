@@ -43,3 +43,14 @@ resource "aws_route53_record" "alias_internal_record" {
     evaluate_target_health = each.value.evaluate_target_health
   }
 }
+
+
+resource "aws_route53_zone" "squid-proxy_zone" {
+  name = var.environment == "production" ? "proxy.timedelta.internal": "proxy.${var.environment}.timedelta.internal"
+  vpc {
+    vpc_id = var.vpc_id
+  }
+  tags = {
+    Name = format("devops-%s-%s-squid-proxy_route53_zone-%s", var.pod, local.timestamp, var.environment)
+  }
+}

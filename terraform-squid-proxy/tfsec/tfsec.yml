@@ -1,2 +1,0 @@
-exclude:
-  - AWS017 # Example: Exclude specific checks if necessary

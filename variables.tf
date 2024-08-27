@@ -200,3 +200,30 @@ variable "alias_records" {
   }))
   default = []
 }
+
+variable "squid_desired_capacity" {
+  description = "Desired number of instances"
+  type        = number
+}
+
+variable "squid_asg_min_size" {
+  description = "Minimum number of instances"
+  type        = number
+}
+
+variable "squid_asg_max_size" {
+  description = "Maximum number of instances"
+  type        = number
+}
+
+variable "squid_scale_up_adjustment" {
+  description = "Adjustment for scale up"
+  type        = number
+  default     = 1
+}
+
+variable "squid_scale_down_adjustment" {
+  description = "Adjustment for scale down"
+  type        = number
+  default     = -1
+}
