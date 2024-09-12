@@ -38,10 +38,10 @@ variable "availability_zones" {
   type        = list(string)
 }
 
- variable "pod" {
-    description = "Pod identifier"
-    type        = string
- }
+variable "pod" {
+  description = "Pod identifier"
+  type        = string
+}
 
 variable "environment" {
   description = "Environment (e.g., sandbox, staging, production)"
@@ -54,8 +54,8 @@ variable "tags" {
 }
 
 variable "amazon_side_asn" {
-    description = "Private Autonomous System Number (ASN) for the Amazon side of a BGP session"
-    type = number
+  description = "Private Autonomous System Number (ASN) for the Amazon side of a BGP session"
+  type        = number
 }
 
 variable "internet_gateway_id" {

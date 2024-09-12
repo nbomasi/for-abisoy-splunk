@@ -15,11 +15,11 @@ resource "aws_security_group" "security_group" {
 
   ingress = [
     for port in var.vpc_security_groups : {
-      description     = "TLS from VPC"
-      from_port       = port
-      to_port         = port
-      protocol        = "tcp"
-      cidr_blocks     = ["0.0.0.0/0"]
+      description      = "TLS from VPC"
+      from_port        = port
+      to_port          = port
+      protocol         = "tcp"
+      cidr_blocks      = ["0.0.0.0/0"]
       ipv6_cidr_blocks = []
       prefix_list_ids  = []
       security_groups  = []
@@ -65,12 +65,12 @@ resource "aws_instance" "ec2_instance" {
 }
 
 resource "aws_launch_template" "asg_launch_template" {
-  count                = var.use_asg ? 1 : 0
+  count = var.use_asg ? 1 : 0
 
-  name_prefix          = format("devops-%s-%s-%s-", var.pod, local.timestamp, var.environment)
-  image_id             = data.aws_ami.latest_packer_ami.id
-  instance_type        = var.instance_type
-  key_name             = var.key_name
+  name_prefix            = format("devops-%s-%s-%s-", var.pod, local.timestamp, var.environment)
+  image_id               = data.aws_ami.latest_packer_ami.id
+  instance_type          = var.instance_type
+  key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.security_group.id]
 
   block_device_mappings {
@@ -97,12 +97,12 @@ resource "aws_launch_template" "asg_launch_template" {
 }
 
 resource "aws_autoscaling_group" "asg" {
-  count                = var.use_asg ? 1 : 0
+  count = var.use_asg ? 1 : 0
 
-  desired_capacity          = var.asg_desired_capacity
-  max_size                  = var.asg_max_size
-  min_size                  = var.asg_min_size
-  vpc_zone_identifier  = var.subnet_ids
+  desired_capacity    = var.asg_desired_capacity
+  max_size            = var.asg_max_size
+  min_size            = var.asg_min_size
+  vpc_zone_identifier = var.subnet_ids
   launch_template {
     id      = aws_launch_template.asg_launch_template[0].id
     version = "$Latest"

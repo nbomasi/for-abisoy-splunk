@@ -43,4 +43,3 @@ output "nlb_security_group_id" {
 }
 
 
-

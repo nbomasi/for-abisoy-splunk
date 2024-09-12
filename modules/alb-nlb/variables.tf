@@ -26,32 +26,32 @@ variable "nlb-name" {
 variable "internal" {
   type        = bool
   description = "whether the load balancer is internal"
-  default = false
+  default     = false
 }
 
 variable "load-balancer-type-alb" {
   type        = string
   description = "Type of load balancer to create (ALB or NLB)"
-  default = "application"
+  default     = "application"
 }
 
 variable "load-balancer-type-nlb" {
   type        = string
   description = "Type of load balancer to create (ALB or NLB)"
-  default = "network"
+  default     = "network"
 }
 
 variable "subnets" {
-  type = list(string)
+  type        = list(string)
   description = "calling subnets from root main.tf"
 }
 variable "vpc_id" {
-  type = string
+  type        = string
   description = "calling vpc_id from root main.tf"
 }
 
 variable "environment" {
-  type = string
+  type        = string
   description = "calling environment from root main.tf"
 }
  

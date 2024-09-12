@@ -18,10 +18,10 @@ output "private_subnet_ids" {
 
 output "public_route_table_ids" {
   description = "The IDs for the Public Route Table"
-  value = aws_route_table.public-rtb.id
+  value       = aws_route_table.public-rtb.id
 }
 
 output "transit_gateway_id" {
   description = "The IDs for the Transit Gateway"
-  value = aws_ec2_transit_gateway.transit_gateway.id
+  value       = aws_ec2_transit_gateway.transit_gateway.id
 }

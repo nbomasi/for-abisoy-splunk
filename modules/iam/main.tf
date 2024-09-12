@@ -1,13 +1,13 @@
 # Define IAM Role
 resource "aws_iam_role" "terraform_role" {
-  name               = var.role_name
+  name = var.role_name
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
         Effect = "Allow",
         Principal = {
-          Service = "ec2.amazonaws.com"  # Example service; adjust based on actual use case
+          Service = "ec2.amazonaws.com" # Example service; adjust based on actual use case
         },
         Action = "sts:AssumeRole"
       }
@@ -29,8 +29,8 @@ resource "aws_iam_policy" "terraform_s3_policy" {
     Version = "2012-10-17",
     Statement = [
       {
-        Effect   = "Allow",
-        Action   = [
+        Effect = "Allow",
+        Action = [
           "s3:PutObject",
           "s3:GetObject",
           "s3:DeleteObject",
@@ -54,8 +54,8 @@ resource "aws_iam_policy" "terraform_dynamodb_policy" {
     Version = "2012-10-17",
     Statement = [
       {
-        Effect   = "Allow",
-        Action   = [
+        Effect = "Allow",
+        Action = [
           "dynamodb:PutItem",
           "dynamodb:GetItem",
           "dynamodb:DeleteItem",

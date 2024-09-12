@@ -1,10 +1,10 @@
 # NLB Resource
 resource "aws_lb" "nlb" {
-  name               = var.nlb_name
-  internal           = var.internal
-  load_balancer_type = "network"
-  subnets            = var.subnets
-  security_groups    = [aws_security_group.nlb_sg.id]
+  name                       = var.nlb_name
+  internal                   = var.internal
+  load_balancer_type         = "network"
+  subnets                    = var.subnets
+  security_groups            = [aws_security_group.nlb_sg.id]
   enable_deletion_protection = var.enable_deletion_protection
 
   tags = merge(

@@ -13,19 +13,19 @@ resource "aws_security_group" "alb_sg" {
 
   // Ingress rule for HTTP (port 80)
   ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
 
   // Ingress rule for HTTPS (port 443)
   ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
 }
@@ -47,7 +47,7 @@ resource "aws_lb" "alb" {
     Environment = var.environment
   }
 }
-    
+
 # NLB resource
 resource "aws_lb" "nlb" {
   count = var.create_nlb ? 1 : 0
@@ -57,10 +57,10 @@ resource "aws_lb" "nlb" {
   load_balancer_type = var.load-balancer-type-nlb
   subnets            = var.subnets
 
-    enable_deletion_protection = false
+  enable_deletion_protection = false
   tags = {
     Name        = "nlb-${var.environment}"
     Environment = var.environment
-  
+
   }
 }

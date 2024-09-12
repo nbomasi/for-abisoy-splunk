@@ -2,6 +2,15 @@ terraform {
   required_version = ">= 0.12"
 }
 
+data "aws_ami" "latest_packer_ami" {
+  most_recent = true
+  owners      = [var.ami_owner]
+
+  filter {
+    name   = "name"
+    values = [var.ami_name_filter]
+  }
+}
 module "vpc" {
   source                              = "./modules/vpc"
   cidr_block                          = var.cidr_block
@@ -103,3 +112,20 @@ module "alb-nlb" {
   environment = var.environment
 }
 
+module "prometheus_grafana_asg" {
+  source = "./modules/asg"
+
+  vpc-id               = module.vpc.vpc_id              # Replace with your VPC ID
+  subnet-ids           = module.vpc.public_subnet_ids # Replace with your subnet IDs
+  ami-id               = data.aws_ami.latest_packer_ami.id  # Replace with the AMI ID 
+  asg-desired-capacity = var.asg-desired-capacity
+  asg-max-size         = var.asg-max-size             # Ensure this is set appropriately
+  health-check-type    = var.health-check-type
+  instance-type        = var.instance-type
+  root-volume-size     = var.root-volume-size
+  root-volume-type     = var.root-volume-type
+  asg-min-size         = var.asg-min-size
+  ami_owner            = var.ami_owner
+  ami_name_filter      = var.ami_name_filter
+
+}
