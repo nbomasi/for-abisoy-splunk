@@ -97,12 +97,26 @@ module "nlb" {
 
 }
 
+data "aws_lb" "alb" {
+  arn = module.alb.alb_arn
+}
 
 module "aws_route53_zone" {
   source      = "./modules/route53"
   vpc_id      = module.vpc.vpc_id
   environment = var.environment
   pod         = var.pod
+  alb_arn     = module.alb.alb_arn
+  alias_records = [
+    {
+      name                   = module.aws_route53_zone.zone_name
+      zone_id                = data.aws_lb.alb.zone_id
+      evaluate_target_health = true
+      alias_name             = data.aws_lb.alb.dns_name
+
+    }
+  ]
+
 }
 
 module "alb-nlb" {

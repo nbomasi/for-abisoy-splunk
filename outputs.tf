@@ -27,6 +27,20 @@ output "transit_gateway_id" {
   value       = module.vpc.transit_gateway_id
 }
 
+output "zone_id" {
+  description = "The ID of the hosted zone"
+  value       = module.aws_route53_zone.zone_id
+}
+
+output "nameservers" {
+  description = "The nameservers of the hosted zone"
+  value       = module.aws_route53_zone.nameservers
+}
+
+output "alb_dns_name" {
+  value = module.alb.dns_name
+}
+
 output "nlb_arn" {
   value = module.nlb.nlb_arn
 }
@@ -42,4 +56,21 @@ output "nlb_security_group_id" {
   value = module.nlb.nlb_sg_id
 }
 
+output "alb_arn" {
+  value = module.alb.alb_arn
+}
 
+output "squid-proxy_asg_name" {
+  description = "The name of the ASG"
+  value       = module.asg_squid_proxy.squid-proxy_asg_name
+}
+
+output "squid-proxy_launch_template_id" {
+  description = "The ID of the launch template"
+  value       = module.asg_squid_proxy.squid-proxy_launch_template_id
+}
+
+output "squid-proxy_zone_name" {
+  description = "The ID of the Squid-proxy hosted zone"
+  value       = module.aws_route53_zone.squid-proxy_zone_name
+}

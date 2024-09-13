@@ -1,6 +1,6 @@
 resource "aws_security_group" "alb_sg" {
   vpc_id = var.vpc_id
-  name   = "alb_sg"
+  name   = "alb-nlb_sg"
 
   // Egress rules
   egress {
