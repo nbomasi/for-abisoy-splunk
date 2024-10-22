@@ -141,5 +141,6 @@ module "prometheus_grafana_asg" {
   asg-min-size         = var.asg-min-size
   ami_owner            = var.ami_owner
   ami_name_filter      = var.ami_name_filter
+  environment          = var.environment
 
 }

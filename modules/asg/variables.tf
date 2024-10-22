@@ -61,3 +61,8 @@ variable "ami_owner" {
 variable "ami_name_filter" {
 
 }
+
+  variable "environment" {
+  description = "Environment (e.g., sandbox, staging, production)"
+  type        = string
+}

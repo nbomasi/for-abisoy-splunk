@@ -60,15 +60,15 @@ output "alb_arn" {
   value = module.alb.alb_arn
 }
 
-output "squid-proxy_asg_name" {
-  description = "The name of the ASG"
-  value       = module.asg_squid_proxy.squid-proxy_asg_name
-}
+# output "squid-proxy_asg_name" {
+#   description = "The name of the ASG"
+#   value       = module.asg_squid_proxy.squid-proxy_asg_name
+# }
 
-output "squid-proxy_launch_template_id" {
-  description = "The ID of the launch template"
-  value       = module.asg_squid_proxy.squid-proxy_launch_template_id
-}
+# output "squid-proxy_launch_template_id" {
+#   description = "The ID of the launch template"
+#   value       = module.asg_squid_proxy.squid-proxy_launch_template_id
+# }
 
 output "squid-proxy_zone_name" {
   description = "The ID of the Squid-proxy hosted zone"
