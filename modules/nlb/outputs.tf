@@ -11,3 +11,8 @@ output "nlb_dns_name" {
 output "nlb_sg_id" {
   value = aws_security_group.nlb_sg.id
 }
+
+output "splunk_indexer_tg_arns" {
+  description = "To reference target  group resources from another module"
+  value       = aws_lb_target_group.splunk_indexer_tg.arn
+}

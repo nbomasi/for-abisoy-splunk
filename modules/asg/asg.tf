@@ -15,6 +15,7 @@ resource "aws_autoscaling_group" "prometheus_grafana_asg" {
   # Health check settings
   health_check_type         = var.health-check-type
   health_check_grace_period = 300
+  
 
 
   # Optional: Scaling policies can be added here
@@ -47,6 +48,7 @@ resource "aws_autoscaling_group" "splunk_new_asg" {
   # Health check settings
   health_check_type         = var.health-check-type
   health_check_grace_period = 300
+  target_group_arns         = [var.target_group_arns]
 
 
   # Optional: Scaling policies can be added here

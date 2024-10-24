@@ -66,3 +66,7 @@ variable "environment" {
   description = "Environment (e.g., sandbox, staging, production)"
   type        = string
 }
+
+variable "target_group_arns" {
+  description = "target group for splunk indexer to be used in splunk asg"
+}

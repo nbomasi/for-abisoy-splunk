@@ -92,6 +92,7 @@ module "nlb" {
   vpc_id        = module.vpc.vpc_id
   tags          = merge(var.tags, { Name = "nlb" })
   ingress_rules = var.ingress_rules
+  environment = var.environment
 
   enable_deletion_protection = false
 
@@ -142,5 +143,6 @@ module "prometheus_grafana_asg" {
   ami_owner            = var.ami_owner
   ami_name_filter      = var.ami_name_filter
   environment          = var.environment
+  target_group_arns    = module.nlb.splunk_indexer_tg_arns
 
 }
