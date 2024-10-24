@@ -54,11 +54,11 @@ asg_min_size         = 1
 asg_max_size         = 3
 asg_desired_capacity = 1
 
- # ASG Configuration
+# ASG Configuration
 instance-type        = "t3.medium"
 asg-min-size         = 1
 asg-max-size         = 5
-asg-desired-capacity = 1                              # Replace with your key pair name
+asg-desired-capacity = 1 # Replace with your key pair name
 
 # Additional configurations
 root-volume-size  = 20

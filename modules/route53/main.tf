@@ -11,12 +11,12 @@ resource "aws_route53_zone" "internal_zone" {
 }
 
 data "aws_lb" "alb" {
-    arn = var.alb_arn
+  arn = var.alb_arn
 }
 
 
 locals {
-    timestamp = formatdate("YYYYMM", timestamp())
+  timestamp = formatdate("YYYYMM", timestamp())
 
 
   alias_records = [
@@ -31,11 +31,11 @@ locals {
 
 
 resource "aws_route53_record" "alias_internal_record" {
-    for_each = { for record in local.alias_records : record.name => record }
+  for_each = { for record in local.alias_records : record.name => record }
 
-    zone_id = aws_route53_zone.internal_zone.zone_id
-    name    = "www.${aws_route53_zone.internal_zone.name}"
-    type    = "A"
+  zone_id = aws_route53_zone.internal_zone.zone_id
+  name    = "www.${aws_route53_zone.internal_zone.name}"
+  type    = "A"
 
   alias {
     name                   = each.value.alias_name
@@ -46,7 +46,7 @@ resource "aws_route53_record" "alias_internal_record" {
 
 
 resource "aws_route53_zone" "squid-proxy_zone" {
-  name = var.environment == "production" ? "proxy.timedelta.internal": "proxy.${var.environment}.timedelta.internal"
+  name = var.environment == "production" ? "proxy.timedelta.internal" : "proxy.${var.environment}.timedelta.internal"
   vpc {
     vpc_id = var.vpc_id
   }

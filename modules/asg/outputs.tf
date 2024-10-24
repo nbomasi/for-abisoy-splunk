@@ -21,3 +21,8 @@ output "instance_public_ips" {
   description = "Public IP addresses of instances in the ASG"
   value       = data.aws_instances.asg_instances.public_ips
 }
+
+output "splunk-security_group_id" {
+  description = "splunk security group id to be use for loadbalancer"
+  value       =  aws_security_group.splunk_new_sg.id
+}

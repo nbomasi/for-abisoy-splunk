@@ -33,7 +33,7 @@ data "aws_ami" "latest_packer_ami" {
 # }
 
 resource "aws_launch_template" "prometheus_grafana_lt" {
-  name          = "pod-b-prometheus-grafana-lt-${environment}"
+  name          = "pod-b-prometheus-grafana-lt-${var.environment}"
   image_id      = var.ami-id
   instance_type = var.instance-type
   # Block device mappings (root volume configuration)
@@ -77,14 +77,14 @@ resource "aws_launch_template" "prometheus_grafana_lt" {
   tag_specifications {
     resource_type = "instance"
     tags = {
-      Name = "pod-b-prometheus-lt-${environment}"
+      Name = "pod-b-prometheus-lt-${var.environment}"
     }
   }
 }
 
 
 resource "aws_launch_template" "splunk_new_lt" {
-  name          = "pod-b-splunk_new_lt-${environment}"
+  name          = "pod-b-splunk_new_lt-${var.environment}"
   image_id      = var.ami-id
   instance_type = var.instance-type
   # Block device mappings (root volume configuration)
@@ -128,7 +128,7 @@ resource "aws_launch_template" "splunk_new_lt" {
   tag_specifications {
     resource_type = "instance"
     tags = {
-      Name = "pod-b-splunk_new_lt-${environment}"
+      Name = "pod-b-splunk_new_lt-${var.environment}"
     }
   }
 }

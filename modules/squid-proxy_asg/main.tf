@@ -11,22 +11,22 @@ data "aws_ami" "latest_packer_ami" {
 #tfsec:ignore:aws-ec2-no-public-egress-sgr
 #tfsec:ignore:aws-ec2-no-public-ingress-sgr
 resource "aws_security_group" "squid-proxy_sg" {
-  name = "squid-proxy-sg"
+  name   = "squid-proxy-sg"
   vpc_id = var.vpc_id
 
   ingress {
     description = "Squid Proxy Port"
-    from_port = 3128
-    to_port = 3128
-    protocol = "tcp"
+    from_port   = 3128
+    to_port     = 3128
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
     description = "Allow outbound"
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -65,7 +65,7 @@ resource "aws_launch_template" "squid_proxy" {
 
   network_interfaces {
     associate_public_ip_address = false
-    security_groups = [aws_security_group.squid-proxy_sg.id]
+    security_groups             = [aws_security_group.squid-proxy_sg.id]
   }
 
   metadata_options {
@@ -79,7 +79,7 @@ resource "aws_launch_template" "squid_proxy" {
     tags = merge(
       var.tags,
       {
-        Name = format("devops-%s-%s-%s-squid-proxy_launch-template", var.pod, local.timestamp, var.environment)
+        Name        = format("devops-%s-%s-%s-squid-proxy_launch-template", var.pod, local.timestamp, var.environment)
         Environment = var.environment
       }
     )
@@ -87,10 +87,10 @@ resource "aws_launch_template" "squid_proxy" {
 }
 
 resource "aws_autoscaling_group" "squid_proxy_asg" {
-  desired_capacity     = var.squid_desired_capacity
-  max_size             = var.squid_asg_max_size
-  min_size             = var.squid_asg_min_size
-  vpc_zone_identifier  = var.squid_subnets_ids
+  desired_capacity    = var.squid_desired_capacity
+  max_size            = var.squid_asg_max_size
+  min_size            = var.squid_asg_min_size
+  vpc_zone_identifier = var.squid_subnets_ids
   launch_template {
     id      = aws_launch_template.squid_proxy.id
     version = "$Latest"

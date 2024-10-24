@@ -2,8 +2,8 @@
 
 # Variables
 SPLUNK_VERSION="9.3.1"  # Replace with the desired Splunk version
-SPLUNK_DEB="splunk-${SPLUNK_VERSION}-0b8d769cb912-linux-2.6-amd64.deb"
-SPLUNK_URL="https://download.splunk.com/products/splunk/releases/${SPLUNK_VERSION}/linux/${SPLUNK_DEB}"
+SPLUNK_DEB="splunk-$SPLUNK_VERSION-0b8d769cb912-linux-2.6-amd64.deb"
+SPLUNK_URL="https://download.splunk.com/products/splunk/releases/$SPLUNK_VERSION/linux/$SPLUNK_DEB"
 INSTALL_DIR="/opt/splunk"
 ADMIN_USER="admin"
 ADMIN_PASS="123456789"  # Set the admin password
@@ -48,3 +48,4 @@ ufw allow 9997/udp    # web interface for splunk
 ufw allow 8089/tcp    # Splunk forwarder
 ufw allow 8089/udp    # web interface for splunk forwarder
 ufw reload
+

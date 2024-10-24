@@ -62,7 +62,7 @@ variable "ami_name_filter" {
 
 }
 
-  variable "environment" {
+variable "environment" {
   description = "Environment (e.g., sandbox, staging, production)"
   type        = string
 }
